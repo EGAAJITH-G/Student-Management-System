@@ -1,0 +1,741 @@
+.container {
+  max-width: 2990px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: calc(100vh - 4.5rem);
+}
+
+/* Header Section */
+.header {
+  background: radial-gradient(circle at 95% 5%, hsla(250, 89%, 60%, 0.05) 0%, transparent 50%), var(--card);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  transition: box-shadow var(--transition-normal);
+}
+
+.header:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.welcomeText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.badgeIcon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  max-width: 750px;
+}
+
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px hsla(250, 89%, 60%, 0.2);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.addBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px hsla(250, 89%, 60%, 0.28);
+}
+
+.addBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filters and GPA Section */
+.filtersBar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.filterGroup {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.selectorItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+  min-width: 240px;
+}
+
+.selectorLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.dropdownWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.selectIcon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.25rem;
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.85rem;
+  transition: all var(--transition-fast);
+}
+
+.selectInput:focus {
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 3px hsla(250, 89%, 60%, 0.15);
+}
+
+.studentLockInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1rem;
+  background-color: hsl(210, 100%, 98%);
+  border: 1px solid hsl(210, 100%, 93%);
+  border-radius: var(--radius-md);
+  color: hsl(210, 100%, 35%);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.lockIcon {
+  color: hsl(210, 100%, 45%);
+}
+
+/* Dynamic GPA Card */
+.gpaCard {
+  background: linear-gradient(135deg, hsl(250, 89%, 60%) 0%, hsl(280, 85%, 55%) 100%);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  color: white;
+  box-shadow: 0 8px 24px hsla(250, 89%, 60%, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  min-width: 360px;
+}
+
+.gpaDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.gpaLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: hsla(0, 0%, 100%, 0.75);
+  letter-spacing: 0.05em;
+}
+
+.gpaValueContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.gpaValue {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.gpaScale {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: hsla(0, 0%, 100%, 0.8);
+}
+
+.gpaFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: hsla(0, 0%, 100%, 0.9);
+  margin-top: 0.5rem;
+}
+
+.gpaFooterIcon {
+  opacity: 0.9;
+}
+
+.gpaCircleWrapper {
+  position: relative;
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gpaProgressSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circleBg {
+  fill: none;
+  stroke: hsla(0, 0%, 100%, 0.15);
+  stroke-width: 3.5;
+}
+
+.circleStroke {
+  fill: none;
+  stroke: white;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--transition-slow) ease-in-out;
+}
+
+.circleLabel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: hsla(0, 0%, 100%, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+
+.circleIcon {
+  color: white;
+}
+
+/* Scorecard Table Card */
+.tableCard {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.loaderArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-grow: 1;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.emptyArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 5rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  flex-grow: 1;
+}
+
+.emptyIcon {
+  color: var(--border);
+}
+
+.emptyArea h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0.5rem;
+}
+
+.emptyArea p {
+  font-size: 0.875rem;
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+/* Table Design */
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 1rem 1.25rem;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-body);
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.row {
+  transition: background-color var(--transition-fast);
+}
+
+.row:hover {
+  background-color: var(--secondary);
+}
+
+.subjectCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.subjectIcon {
+  color: var(--primary);
+}
+
+.subjectName {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.creditsText {
+  font-weight: 600;
+  color: hsl(200, 95%, 40%);
+}
+
+.marksBadge {
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-main);
+}
+
+.totalMarksText {
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.gradeBadge {
+  display: inline-flex;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.gradePass {
+  background-color: var(--success-bg);
+  color: var(--success);
+  border: 1px solid hsla(142, 76%, 36%, 0.1);
+}
+
+.gradeFail {
+  background-color: var(--error-bg);
+  color: var(--error);
+  border: 1px solid hsla(346, 84%, 50%, 0.1);
+}
+
+.gpText {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.centerAlign {
+  text-align: center !important;
+}
+
+/* Action controls */
+.actionGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.editBtn, .deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.editBtn {
+  color: var(--primary);
+}
+
+.editBtn:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.deleteBtn {
+  color: var(--error);
+}
+
+.deleteBtn:hover {
+  background-color: var(--error-bg);
+  border-color: var(--error);
+}
+
+/* Form Dialog Modal Overlay styling */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: hsla(224, 71%, 4%, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modalContent {
+  background-color: var(--card);
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modalTitleBlock {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary);
+}
+
+.modalHeaderIcon {
+  color: var(--primary);
+}
+
+.modalTitleBlock h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.closeBtn:hover {
+  color: var(--text-main);
+}
+
+.modalForm {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.formInput, .formSelect {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.formInput::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.formInput:focus, .formSelect:focus {
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 3px hsla(250, 89%, 60%, 0.15);
+}
+
+.inputError {
+  border-color: var(--error) !important;
+  background-color: var(--error-bg) !important;
+}
+
+.errorText {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--error);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.cancelBtn {
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--text-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cancelBtn:hover {
+  background-color: var(--secondary);
+  color: var(--text-main);
+}
+
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px hsla(250, 89%, 60%, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.saveBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px hsla(250, 89%, 60%, 0.28);
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnSpinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* Responsive details */
+@media (max-width: 1024px) {
+  .filtersBar {
+    grid-template-columns: 1fr;
+  }
+  .gpaCard {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .badge {
+    align-self: center;
+  }
+  .addBtn {
+    justify-content: center;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pdfBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-body);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.pdfBtn:hover:not(:disabled) {
+  background-color: var(--secondary);
+  color: var(--text-main);
+  border-color: var(--primary);
+}
+
+.pdfBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

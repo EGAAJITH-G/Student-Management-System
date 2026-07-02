@@ -1,0 +1,401 @@
+.wrapper {
+  width: 100%;
+}
+
+/* Card Wrapper */
+.tableCard {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: box-shadow var(--transition-normal);
+}
+
+.tableCard:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Responsive Table Container */
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+/* Header Styles */
+.table th {
+  background-color: var(--secondary);
+  color: var(--text-body);
+  font-weight: 700;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.actionsHeader {
+  text-align: right;
+  padding-right: 2rem !important;
+}
+
+.actionsCell {
+  text-align: right;
+  padding-right: 2rem !important;
+}
+
+/* Body Styles */
+.table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-body);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.row {
+  transition: background-color var(--transition-fast);
+}
+
+.row:hover {
+  background-color: hsl(220, 14%, 98%);
+}
+
+.row:last-child td {
+  border-bottom: none;
+}
+
+/* Cell Elements */
+.studentCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.initialBadge {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid hsla(250, 89%, 60%, 0.15);
+  overflow: hidden; /* to clip image border-radius */
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.studentName {
+  font-weight: 600;
+  color: var(--text-main);
+  font-family: var(--font-display);
+}
+
+.emailCell, .phoneCell, .dateCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cellIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-muted);
+}
+
+/* Badge for course */
+.badgeCourse {
+  display: inline-flex;
+  align-items: center;
+  background-color: hsla(250, 89%, 60%, 0.06);
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid hsla(250, 89%, 60%, 0.12);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Actions Group */
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btnEdit, .btnDelete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnEdit {
+  color: var(--primary);
+}
+
+.btnEdit:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.btnDelete {
+  color: var(--error);
+}
+
+.btnDelete:hover {
+  background-color: var(--error-bg);
+  border-color: var(--error);
+  transform: translateY(-1px);
+}
+
+.btnIcon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+/* Modal Confirmation Layout */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.modalContent {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 440px;
+  padding: 1.75rem;
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.modalIconBadge {
+  background-color: var(--error-bg);
+  color: var(--error);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.modalText {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.highlight {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.modalDetails {
+  background-color: var(--secondary);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-body);
+  font-weight: 500;
+}
+
+.detailIcon {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--text-muted);
+}
+
+.modalActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalBtnCancel, .modalBtnDelete {
+  flex: 1;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.modalBtnCancel {
+  background-color: var(--secondary);
+  color: var(--text-body);
+  border: 1px solid var(--border);
+}
+
+.modalBtnCancel:hover {
+  background-color: var(--secondary-hover);
+}
+
+.modalBtnDelete {
+  background-color: var(--error);
+  color: white;
+  box-shadow: 0 4px 10px hsla(346, 84%, 50%, 0.2);
+}
+
+.modalBtnDelete:hover {
+  background-color: hsl(346, 84%, 44%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px hsla(346, 84%, 50%, 0.28);
+}
+
+/* Skeleton Loading Shimmer */
+.skeletonRow td {
+  padding: 1.25rem;
+}
+
+.skeletonText {
+  height: 1.1rem;
+  background: linear-gradient(90deg, var(--secondary) 25%, hsl(220, 14%, 90%) 50%, var(--secondary) 75%);
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.skeletonBtn {
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(90deg, var(--secondary) 25%, hsl(220, 14%, 90%) 50%, var(--secondary) 75%);
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Empty State Styling */
+.emptyContainer {
+  padding: 4rem 2rem !important;
+  text-align: center;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.emptyIconWrapper {
+  background-color: var(--secondary);
+  color: var(--text-muted);
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  border: 1px dashed var(--border);
+}
+
+.emptyIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.emptyState h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

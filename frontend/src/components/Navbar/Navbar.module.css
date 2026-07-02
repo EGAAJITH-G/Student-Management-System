@@ -1,0 +1,255 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: hsla(0, 0%, 100%, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition-normal);
+}
+
+.container {
+  /* max-width: 1280px; */
+  max-width: 2990px;
+
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.5rem;
+}
+
+.welcomeGreeting {
+  display: flex;
+  align-items: center;
+}
+
+.greetingTitle {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.iconWrapper {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: white;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px hsla(250, 89%, 60%, 0.25);
+  transition: transform var(--transition-normal);
+}
+
+.logoArea:hover .iconWrapper {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.logoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.navItem:hover {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+.active {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.navIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.metaArea {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.dateBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--secondary);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-body);
+  border: 1px solid var(--border);
+}
+
+.calendarIcon {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--primary);
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: 2px solid var(--card);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.userRole {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.btnLogout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--error-bg);
+  color: var(--error);
+  border: 1px solid hsla(346, 84%, 50%, 0.12);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnLogout:hover {
+  background-color: hsl(346, 84%, 90%);
+  border-color: var(--error);
+}
+
+.logoutIcon {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.hamburgerBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hamburgerBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    color: var(--text-body);
+    cursor: pointer;
+    margin-right: 0.75rem;
+    transition: all var(--transition-fast);
+  }
+
+  .hamburgerBtn:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+}
+
+@media (max-width: 640px) {
+  .dateBadge {
+    display: none;
+  }
+  .navLinks {
+    display: none;
+  }
+  .userDetails {
+    display: none; /* Hide details on small mobile viewports */
+  }
+}
+
