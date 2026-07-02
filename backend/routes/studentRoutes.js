@@ -4,13 +4,16 @@ const {
   getStudents,
   createStudent,
   updateStudent,
-  deleteStudent
+  deleteStudent,
+  bulkUploadStudents
 } = require('../controllers/studentController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const { validateStudent } = require('../middleware/validationMiddleware');
 
 // Lock down all student endpoints inside this router
 router.use(protect);
+
+router.post('/bulk', authorize('admin', 'staff'), bulkUploadStudents);
 
 router.route('/')
   .get(authorize('admin', 'staff', 'student'), getStudents)

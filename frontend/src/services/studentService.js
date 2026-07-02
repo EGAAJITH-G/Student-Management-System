@@ -33,6 +33,16 @@ const studentService = {
   },
 
   /**
+   * Bulk upload student records
+   * @param {Array} students 
+   * @returns {Promise<object>}
+   */
+  bulkUpload: async (students) => {
+    const response = await axios.post(`${API_URL}/bulk`, { students });
+    return response.data;
+  },
+
+  /**
    * Update student details by ID
    * @param {string} id 
    * @param {object} studentData 

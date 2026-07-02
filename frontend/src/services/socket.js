@@ -26,7 +26,11 @@ export const initSocket = (dispatch, storeState) => {
     console.log('Real-time Notification: Student added:', data);
     
     // Trigger live green Toastify alert
-    toast.success(`[Real-Time Alert] A new student has been registered: ${data.name}`, {
+    const alertMessage = data.bulk 
+      ? `Bulk registered ${data.count} new student profiles!`
+      : `A new student has been registered: ${data.name}`;
+
+    toast.success(`[Real-Time Alert] ${alertMessage}`, {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -40,7 +44,9 @@ export const initSocket = (dispatch, storeState) => {
     dispatch(addNotification({
       id: `add-${data._id || Date.now()}`,
       type: 'CREATE',
-      message: `A new student has been registered: ${data.name} (${data.course})`,
+      message: data.bulk 
+        ? `Bulk registered ${data.count} new student profiles`
+        : `A new student has been registered: ${data.name} (${data.course})`,
       timestamp: new Date().toISOString()
     }));
 

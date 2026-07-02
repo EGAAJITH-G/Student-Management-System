@@ -60,6 +60,10 @@ const Home = () => {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
+  const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
+  const [bulkFileError, setBulkFileError] = useState('');
+  const [bulkStudents, setBulkStudents] = useState([]);
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
 
   // Refs for debouncing and click-outside events
   const searchTimeoutRef = useRef(null);
@@ -361,6 +365,116 @@ const Home = () => {
     }
   };
 
+  // Parse CSV File locally to show preview and perform validations
+  const handleCSVFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+      setBulkFileError('Please upload a valid CSV file.');
+      setBulkStudents([]);
+      return;
+    }
+
+    setBulkFileError('');
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const text = event.target.result;
+        // Split by lines, handle windows CRLF
+        const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+        if (lines.length < 2) {
+          setBulkFileError('CSV file is empty or contains no records.');
+          setBulkStudents([]);
+          return;
+        }
+
+        // Parse headers (comma separated)
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/^["']|["']$/g, ''));
+        
+        // Check required headers
+        const required = ['name', 'email', 'course', 'phone'];
+        const missing = required.filter(req => !headers.includes(req));
+        if (missing.length > 0) {
+          setBulkFileError(`Missing required column headers: ${missing.join(', ')}. Please format headers as: name, email, course, phone`);
+          setBulkStudents([]);
+          return;
+        }
+
+        const nameIndex = headers.indexOf('name');
+        const emailIndex = headers.indexOf('email');
+        const courseIndex = headers.indexOf('course');
+        const phoneIndex = headers.indexOf('phone');
+
+        const parsedStudents = [];
+        for (let i = 1; i < lines.length; i++) {
+          // Simple comma splitter (handling basic quotes if present)
+          const cols = [];
+          let currentStr = '';
+          let inQuotes = false;
+          
+          const lineStr = lines[i];
+          for (let c = 0; c < lineStr.length; c++) {
+            const char = lineStr[c];
+            if (char === '"' || char === "'") {
+              inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+              cols.push(currentStr.trim());
+              currentStr = '';
+            } else {
+              currentStr += char;
+            }
+          }
+          cols.push(currentStr.trim());
+
+          const name = cols[nameIndex]?.replace(/^["']|["']$/g, '') || '';
+          const email = cols[emailIndex]?.replace(/^["']|["']$/g, '') || '';
+          const course = cols[courseIndex]?.replace(/^["']|["']$/g, '') || '';
+          const phone = cols[phoneIndex]?.replace(/^["']|["']$/g, '') || '';
+
+          parsedStudents.push({ name, email, course, phone, rowNum: i + 1 });
+        }
+
+        setBulkStudents(parsedStudents);
+      } catch (err) {
+        setBulkFileError('Error reading or parsing CSV file: ' + err.message);
+        setBulkStudents([]);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Submit bulk uploaded student records
+  const handleBulkUploadSubmit = async () => {
+    if (bulkStudents.length === 0) return;
+    setIsBulkUploading(true);
+    setBulkFileError('');
+    try {
+      const response = await studentService.bulkUpload(bulkStudents);
+      if (response.success) {
+        showNotification('success', `Successfully bulk uploaded ${response.count} students!`);
+        setIsBulkUploadOpen(false);
+        setBulkStudents([]);
+        
+        // Refresh grid
+        dispatch(setCurrentPage(1));
+        fetchStudentsData(searchQuery, filterCourse, sortMethod, 1);
+        dispatch(fetchAllStudents());
+      } else {
+        setBulkFileError(response.error || 'Failed to perform bulk upload.');
+      }
+    } catch (err) {
+      if (err.errors && Array.isArray(err.errors)) {
+        // Show validation errors from backend
+        setBulkFileError('The following rows failed validation:\n' + err.errors.join('\n'));
+      } else {
+        setBulkFileError(err.error || err.message || 'An error occurred during bulk upload.');
+      }
+    } finally {
+      setIsBulkUploading(false);
+    }
+  };
+
   return (
     <div className={`${styles.dashboard} fade-in`}>
       {/* Main Header / Welcome Section */}
@@ -377,17 +491,33 @@ const Home = () => {
         </div>
         <div className={styles.welcomeActions}>
           {user?.role === 'admin' && (
-            <button 
-              onClick={() => {
-                setEditingStudent(null);
-                setIsFormOpen(true); // Open blank form for registering a new student
-              }} 
-              className={styles.addStudentBtn}
-              title="Register New Student"
-            >
-              <UserPlus className={styles.addStudentIcon} />
-              <span>Register Student</span>
-            </button>
+            <>
+              <button 
+                onClick={() => {
+                  setEditingStudent(null);
+                  setIsFormOpen(true); // Open blank form for registering a new student
+                }} 
+                className={styles.addStudentBtn}
+                title="Register New Student"
+              >
+                <UserPlus className={styles.addStudentIcon} />
+                <span>Register Student</span>
+              </button>
+
+              <button 
+                onClick={() => {
+                  setBulkFileError('');
+                  setBulkStudents([]);
+                  setIsBulkUploadOpen(true);
+                }} 
+                className={styles.refreshBtn}
+                style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderColor: 'rgba(79, 70, 229, 0.15)' }}
+                title="Bulk Upload Students from CSV"
+              >
+                <Download className={styles.refreshIcon} style={{ transform: 'rotate(180deg)', width: '0.85rem', height: '0.85rem' }} />
+                <span>Bulk Upload</span>
+              </button>
+            </>
           )}
 
           <button 
@@ -610,6 +740,98 @@ const Home = () => {
               onCancel={handleCancelForm}
               isLoading={isFormLoading}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Upload Modal */}
+      {isBulkUploadOpen && (
+        <div className={styles.modalOverlay} onClick={() => !isBulkUploading && setIsBulkUploadOpen(false)}>
+          <div className={styles.bulkModalContent} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border)', paddingBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <GraduationCap style={{ color: 'var(--primary)' }} />
+                Bulk Upload Students
+              </h3>
+              <button onClick={() => !isBulkUploading && setIsBulkUploadOpen(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-body)' }}>
+              Upload a CSV file containing student records. The file must include a header row with columns: <strong>name, email, course, phone</strong>.
+            </p>
+
+            <div className={styles.bulkDropZone} onClick={() => document.getElementById('bulk-csv-input').click()}>
+              <Download size={32} style={{ color: 'var(--text-muted)', transform: 'rotate(180deg)' }} />
+              <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Click to select CSV File</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Format: name, email, course, phone</span>
+              <input 
+                id="bulk-csv-input"
+                type="file"
+                accept=".csv"
+                style={{ display: 'none' }}
+                onChange={handleCSVFileChange}
+                disabled={isBulkUploading}
+              />
+            </div>
+
+            {bulkFileError && (
+              <div className={styles.bulkErrorBox}>
+                {bulkFileError}
+              </div>
+            )}
+
+            {bulkStudents.length > 0 && !bulkFileError && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <span>Preview ({bulkStudents.length} records found)</span>
+                  <span style={{ color: 'var(--success)' }}>Ready to upload</span>
+                </div>
+                <div className={styles.bulkPreviewContainer}>
+                  <table className={styles.bulkPreviewTable}>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Phone</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bulkStudents.map((st, idx) => (
+                        <tr key={idx}>
+                          <td>{idx + 1}</td>
+                          <td>{st.name}</td>
+                          <td>{st.email}</td>
+                          <td>{st.course}</td>
+                          <td>{st.phone}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            <div className={styles.bulkActionRow}>
+              <button 
+                onClick={() => setIsBulkUploadOpen(false)}
+                className={styles.refreshBtn}
+                disabled={isBulkUploading}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleBulkUploadSubmit}
+                className={styles.addStudentBtn}
+                disabled={bulkStudents.length === 0 || isBulkUploading || !!bulkFileError}
+                style={{ background: 'var(--primary)' }}
+              >
+                {isBulkUploading ? 'Uploading...' : `Upload ${bulkStudents.length} Students`}
+              </button>
+            </div>
           </div>
         </div>
       )}
