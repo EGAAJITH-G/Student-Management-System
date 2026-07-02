@@ -8,10 +8,12 @@ let socket = null;
 export const initSocket = (dispatch, storeState) => {
   if (socket) return socket;
 
-  // Connect to the backend server. The backend runs on port 5000.
-  const socketUrl = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000' 
-    : `${window.location.protocol}//${window.location.hostname}:5000`;
+  // Connect to the backend server. If VITE_API_URL is configured (e.g. on Vercel), use it.
+  // Otherwise, default to localhost or local hostname parameters.
+  const socketUrl = import.meta.env.VITE_API_URL || 
+    (window.location.hostname === 'localhost' 
+      ? 'http://localhost:5000' 
+      : `${window.location.protocol}//${window.location.hostname}:5000`);
 
   socket = io(socketUrl, {
     transports: ['websocket', 'polling'],
